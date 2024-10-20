@@ -19,14 +19,15 @@ const server = http.createServer(
         }
         if (req.url === '/api/users') {
             userRoutes(req, res)
+        } else {
+            res.statusCode = 404
+            res.end(
+                JSON.stringify({
+                    message:
+                        'This api route does not exist please use a valid route',
+                })
+            )
         }
-        res.statusCode = 404
-        res.end(
-            JSON.stringify({
-                message:
-                    'This api route does not exist please use a valid route',
-            })
-        )
     }
 )
 
