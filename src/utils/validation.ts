@@ -12,22 +12,29 @@ export default function validation(user: User): Validation {
             message: 'User is required',
         }
     }
-    if (!user.name) {
+
+    if (!user.name || typeof user.name !== 'string') {
         return {
             status: false,
-            message: 'Name is required',
+            message: 'Name is required and should be a string',
         }
     }
-    if (!user.age) {
+
+    if (!user.age || typeof user.age !== 'number') {
         return {
             status: false,
-            message: 'Age is required',
+            message: 'Age is required and should be a number',
         }
     }
-    if (!user.hobbies) {
+
+    if (
+        !Array.isArray(user.hobbies) ||
+        !user.hobbies.every((hobby) => typeof hobby === 'string')
+    ) {
         return {
             status: false,
-            message: 'Hobbies is required',
+            message:
+                'Hobbies is required and should be an array of strings or an empty array',
         }
     }
 
