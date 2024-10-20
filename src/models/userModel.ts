@@ -1,3 +1,5 @@
+import createUUID from '../utils/uuidUtils'
+
 export interface User {
     name: string
     age: number
@@ -12,6 +14,8 @@ export const getAllUsers = () => users || 'No users found'
 export const getUser = (id: string) => users.find((user) => user.id === id)
 
 export const addUser = (user: User) => {
-    users.push(user)
+    const newUser = { ...user, id: createUUID() as string }
+
+    users.push(newUser)
     return user
 }
