@@ -1,4 +1,8 @@
 import { IncomingMessage, ServerResponse } from 'node:http'
+import {
+    getAllUsersHandler,
+    postUserHandler,
+} from '../controllers/userController'
 
 export default function userRoutes(req: IncomingMessage, res: ServerResponse) {
     const urlParts = req.url?.split('/') || []
@@ -10,13 +14,11 @@ export default function userRoutes(req: IncomingMessage, res: ServerResponse) {
             if (userId) {
                 //controller
             } else {
-                res.statusCode = 200
-                res.end(JSON.stringify('All users'))
+                return getAllUsersHandler(req, res)
             }
             break
         case 'POST':
-            //controller
-            break
+            return postUserHandler(req, res)
         case 'PUT':
             if (userId) {
                 //controller
