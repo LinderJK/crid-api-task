@@ -88,4 +88,68 @@ describe('API Server Tests', () => {
             hobbies: ['test'],
         })
     })
+
+    it('should update user by id', async () => {
+        const newUserResponse = await request(testServer)
+            .post('/api/users/')
+            .send({
+                name: 'test',
+                age: 10,
+                hobbies: ['test'],
+            })
+        const { id: userId } = newUserResponse.body
+        expect(newUserResponse.status).toBe(201)
+
+        const response = await request(testServer)
+            .put(`/api/users/${userId}`)
+            .send({
+                name: 'test2',
+                age: 11,
+                hobbies: ['test2'],
+            })
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual({
+            name: 'test2',
+            age: 11,
+            id: userId,
+            hobbies: ['test2'],
+        })
+    })
+
+    it('should delete user by id', async () => {
+        const newUserResponse = await request(testServer)
+            .post('/api/users/')
+            .send({
+                name: 'test',
+                age: 10,
+                hobbies: ['test'],
+            })
+        const { id: userId } = newUserResponse.body
+        expect(newUserResponse.status).toBe(201)
+
+        const response = await request(testServer).delete(
+            `/api/users/${userId}`
+        )
+        expect(response.status).toBe(204)
+    })
+    it('should not find deleted user', async () => {
+        const newUserResponse = await request(testServer)
+            .post('/api/users/')
+            .send({
+                name: 'test',
+                age: 10,
+                hobbies: ['test'],
+            })
+        const { id: userId } = newUserResponse.body
+        expect(newUserResponse.status).toBe(201)
+
+        const deleteResponse = await request(testServer).delete(
+            `/api/users/${userId}`
+        )
+        expect(deleteResponse.status).toBe(204)
+
+        const response = await request(testServer).get(`/api/users/${userId}`)
+        expect(response.status).toBe(404)
+        expect(response.text).toContain(`User with id ${userId} not found`)
+    })
 })
