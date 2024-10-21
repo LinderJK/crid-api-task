@@ -76,49 +76,50 @@ export const getUserByIdHandler = async (
     }
 }
 
-export const updateUserH,
-    andler = async (req: IncomingMessage, res: ServerResponse, id: string) => {
-        let body = ''
+export const updateUserHandler = async (
+    req: IncomingMessage,
+    res: ServerResponse,
+    id: string
+) => {
+    let body = ''
 
-        req.on('data', (chunk) => {
-            body += chunk
-        })
+    req.on('data', (chunk) => {
+        body += chunk
+    })
 
-        req.on('end', async () => {
-            try {
-                const user = JSON.parse(body)
-                const validationResponse = validation(user)
+    req.on('end', async () => {
+        try {
+            const user = JSON.parse(body)
+            const validationResponse = validation(user)
 
-                if (validationResponse.status) {
-                    const updatedUser = await updateUser(id, user)
-                    if (updatedUser) {
-                        res.writeHead(200, {
-                            'Content-Type': 'application/json',
-                        })
-                        return res.end(JSON.stringify(updatedUser))
-                    } else {
-                        res.writeHead(404, {
-                            'Content-Type': 'application/json',
-                        })
-                        return res.end(
-                            JSON.stringify({
-                                message: `User with id ${id} not found`,
-                            })
-                        )
-                    }
+            if (validationResponse.status) {
+                const updatedUser = await updateUser(id, user)
+                if (updatedUser) {
+                    res.writeHead(200, {
+                        'Content-Type': 'application/json',
+                    })
+                    return res.end(JSON.stringify(updatedUser))
                 } else {
-                    res.writeHead(400, { 'Content-Type': 'application/json' })
-                    return res.end(JSON.stringify(validationResponse))
+                    res.writeHead(404, {
+                        'Content-Type': 'application/json',
+                    })
+                    return res.end(
+                        JSON.stringify({
+                            message: `User with id ${id} not found`,
+                        })
+                    )
                 }
-            } catch (error) {
-                console.log(error)
-                res.writeHead(500, { 'Content-Type': 'application/json' })
-                return res.end(
-                    JSON.stringify({ message: `Error updating user` })
-                )
+            } else {
+                res.writeHead(400, { 'Content-Type': 'application/json' })
+                return res.end(JSON.stringify(validationResponse))
             }
-        })
-    }
+        } catch (error) {
+            console.log(error)
+            res.writeHead(500, { 'Content-Type': 'application/json' })
+            return res.end(JSON.stringify({ message: `Error updating user` }))
+        }
+    })
+}
 
 export const deleteUserHandler = async (
     req: IncomingMessage,
