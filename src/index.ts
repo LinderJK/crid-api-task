@@ -7,7 +7,6 @@ const envFile =
         ? '.env.production'
         : '.env.development'
 dotenv.config({ path: envFile })
-
 const PORT = process.env.PORT || 3000
 
 const server = http.createServer(
@@ -24,7 +23,10 @@ const server = http.createServer(
 
             return
         }
-        if (req.url === '/api/users') {
+
+        const urlParts = req.url?.split('/') || []
+
+        if (urlParts[1] === 'api' && urlParts[2] === 'users') {
             userRoutes(req, res)
         } else {
             res.statusCode = 404
