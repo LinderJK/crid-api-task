@@ -1,5 +1,6 @@
 import { IncomingMessage, ServerResponse } from 'node:http'
 import {
+    deleteUserHandler,
     getAllUsersHandler,
     getUserByIdHandler,
     postUserHandler,
@@ -27,6 +28,7 @@ export default function userRoutes(req: IncomingMessage, res: ServerResponse) {
             } else {
                 return getAllUsersHandler(req, res)
             }
+
         case 'POST':
             return postUserHandler(req, res)
         case 'PUT':
@@ -48,11 +50,18 @@ export default function userRoutes(req: IncomingMessage, res: ServerResponse) {
                     })
                 )
             }
-            //controller
             break
         case 'DELETE':
             if (userId) {
-                //controller
+                if (!isUuid(userId)) {
+                    res.statusCode = 400
+                    return res.end(
+                        JSON.stringify({
+                            message: `Invalid user id format: ${userId}`,
+                        })
+                    )
+                }
+                return deleteUserHandler(req, res, userId)
             } else {
                 res.statusCode = 500
                 res.end(
