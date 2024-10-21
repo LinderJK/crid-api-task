@@ -4,6 +4,7 @@ import {
     getUserByIdHandler,
     postUserHandler,
 } from '../controllers/userController'
+import { validate as isUuid } from 'uuid'
 
 export default function userRoutes(req: IncomingMessage, res: ServerResponse) {
     const urlParts = req.url?.split('/') || []
@@ -13,6 +14,14 @@ export default function userRoutes(req: IncomingMessage, res: ServerResponse) {
     switch (method) {
         case 'GET':
             if (userId) {
+                if (!isUuid(userId)) {
+                    res.statusCode = 400
+                    return res.end(
+                        JSON.stringify({
+                            message: `Invalid user id format: ${userId}`,
+                        })
+                    )
+                }
                 return getUserByIdHandler(req, res, userId)
             } else {
                 return getAllUsersHandler(req, res)
