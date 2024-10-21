@@ -79,9 +79,8 @@ To be like `127.0.0.1	localhost`.
 
 `PORT = 3070` for development
 
-`PORT = 8080` for production
+`PORT = 8083` for production
 
-You port 8080 can be used for different program. You can use any port.
 
 Base URL
 `http://localhost:<PORT>/api/users`
