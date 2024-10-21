@@ -9,13 +9,12 @@ export interface User {
 
 const users: User[] = []
 
-export const getAllUsers = () => users || 'No users found'
+export const getAllUsers = async() => users || 'No users found'
 
-export const getUser = (id: string) => users.find((user) => user.id === id)
+export const getUser = async(id: string) => users.find((user) => user.id === id)
 
-export const addUser = (user: User) => {
+export const addUser =async(user: User) => {
     const newUser = { ...user, id: createUUID() as string }
-
     users.push(newUser)
     return user
 }
