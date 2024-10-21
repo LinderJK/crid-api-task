@@ -72,13 +72,14 @@ npm run test
 ```
 
 If you have error then run tests please check you `hosts` file.
+For mac or linux in `/etc/hosts`. Use `sudo nano /etc/hosts` for check.
 To be like `127.0.0.1	localhost`.
 
 ## API Endpoints
 
-PORT = 3070 for development
+`PORT = 3070` for development
 
-PORT = 8080 for production
+`PORT = 8080` for production
 
 You port 8080 can be used for different program. You can use any port.
 
@@ -132,4 +133,5 @@ Successful responses will return JSON data. For example, when retrieving all use
   }
 ]
 
+Thx to review and good luck in future tasks.
 
