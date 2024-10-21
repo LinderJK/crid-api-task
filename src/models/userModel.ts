@@ -18,3 +18,11 @@ export const addUser =async(user: User) => {
     users.push(newUser)
     return user
 }
+
+export const updateUser = async(id: string, user: User) => {
+    const index = users.findIndex((u) => u.id === id)
+    if (index !== -1) {
+        users[index] = { ...user, id }
+        return user
+    }
+}

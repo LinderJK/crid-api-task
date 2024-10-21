@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'node:http'
-import { addUser, getAllUsers, getUser } from '../models/userModel'
+import { addUser, getAllUsers, getUser, updateUser } from '../models/userModel'
 import validation from '../utils/validation'
 
 export const getAllUsersHandler = async(
@@ -60,4 +60,42 @@ export const getUserByIdHandler = async(req: IncomingMessage, res: ServerRespons
          res.writeHead(500, { 'Content-Type': 'application/json' })
          return res.end(JSON.stringify({ message: 'Error fetching user' }))
      }
+}
+
+export const updateUserHandler = async(req: IncomingMessage, res: ServerResponse, id: string) => {
+    let body = ''
+
+    req.on('data', (chunk) => {
+        body += chunk
+    })
+
+    req.on('end', async() => {
+        try {
+            const user = JSON.parse(body)
+            const validationResponse = validation(user)
+            
+
+            if (validationResponse.status) {
+               const updatedUser = await updateUser(id, user)
+               if (updatedUser) {
+                   res.writeHead(200, { 'Content-Type': 'application/json' })
+                   return res.end(JSON.stringify(updatedUser))
+               } else {
+                   res.writeHead(404, { 'Content-Type': 'application/json' })
+                   return res.end(
+                       JSON.stringify({
+                           message: `User with id ${id} not found`,
+                       })
+                   )
+               }
+            } else {
+                res.writeHead(400, { 'Content-Type': 'application/json' })
+                return res.end(JSON.stringify(validationResponse))
+            }
+        } catch (error) {
+            console.log(error)
+            res.writeHead(500, { 'Content-Type': 'application/json' })
+            return res.end(JSON.stringify({ message: `Server error` }))
+        }
+    })
 }

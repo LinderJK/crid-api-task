@@ -3,6 +3,7 @@ import {
     getAllUsersHandler,
     getUserByIdHandler,
     postUserHandler,
+    updateUserHandler,
 } from '../controllers/userController'
 import { validate as isUuid } from 'uuid'
 
@@ -30,7 +31,7 @@ export default function userRoutes(req: IncomingMessage, res: ServerResponse) {
             return postUserHandler(req, res)
         case 'PUT':
             if (userId) {
-                //controller
+                return updateUserHandler(req, res, userId)
             } else {
                 res.statusCode = 500
                 res.end(
