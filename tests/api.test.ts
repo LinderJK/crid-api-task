@@ -68,4 +68,24 @@ describe('API Server Tests', () => {
             hobbies: ['test'],
         })
     })
+    it('should get user by id', async () => {
+        const newUserResponse = await request(testServer)
+            .post('/api/users/')
+            .send({
+                name: 'test',
+                age: 10,
+                hobbies: ['test'],
+            })
+        const { id: userId } = newUserResponse.body
+        expect(newUserResponse.status).toBe(201)
+
+        const response = await request(testServer).get(`/api/users/${userId}`)
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual({
+            name: 'test',
+            age: 10,
+            id: userId,
+            hobbies: ['test'],
+        })
+    })
 })
