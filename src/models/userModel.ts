@@ -17,7 +17,7 @@ export const getUser = async (id: string) =>
 export const addUser = async (user: User) => {
     const newUser = { ...user, id: createUUID() as string }
     users.push(newUser)
-    return user
+    return newUser
 }
 
 export const updateUser = async (id: string, user: User) => {
