@@ -7,6 +7,7 @@ const envFile =
 dotenv.config({ path: envFile })
 
 const PORT = process.env.PORT || 3000
+const URL_LENGTH = 3
 
 const server = http.createServer(
     (req: http.IncomingMessage, res: http.ServerResponse) => {
@@ -25,7 +26,12 @@ const server = http.createServer(
 
         const urlParts = req.url?.split('/') || []
 
-        if (urlParts[1] === 'api' && urlParts[2] === 'users') {
+        if (
+            urlParts[1] === 'api' &&
+            urlParts[2] === 'users' &&
+            (urlParts.length === URL_LENGTH ||
+                urlParts.length === URL_LENGTH + 1)
+        ) {
             userRoutes(req, res)
         } else {
             res.statusCode = 404
