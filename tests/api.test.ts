@@ -58,7 +58,6 @@ describe('API Server Tests', () => {
             .send({
                 name: 'test',
                 age: 10,
-                id: '1',
                 hobbies: ['test'],
             })
         expect(response.status).toBe(201)
