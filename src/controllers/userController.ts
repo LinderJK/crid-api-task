@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'node:http'
-import { addUser, getAllUsers } from '../models/userModel'
+import { addUser, getAllUsers, getUser } from '../models/userModel'
 import validation from '../utils/validation'
 
 export const getAllUsersHandler = (
@@ -34,4 +34,15 @@ export const postUserHandler = (req: IncomingMessage, res: ServerResponse) => {
             return res.end(JSON.stringify({ message: `Wrong JSON format` }))
         }
     })
+}
+
+export const getUserByIdHandler = (req: IncomingMessage, res: ServerResponse, id: string) => {
+    res.writeHead(200, { 'Content-Type': 'application/json' })
+    const user = getUser(id);
+    if (user) {
+        return res.end(JSON.stringify(user))
+    }
+
+    res.writeHead(400, { 'Content-Type': 'application/json' })
+    return res.end(JSON.stringify({ message: `User with id ${id} not found` }))
 }

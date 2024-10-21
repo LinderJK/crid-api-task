@@ -1,6 +1,7 @@
 import { IncomingMessage, ServerResponse } from 'node:http'
 import {
     getAllUsersHandler,
+    getUserByIdHandler,
     postUserHandler,
 } from '../controllers/userController'
 
@@ -12,11 +13,10 @@ export default function userRoutes(req: IncomingMessage, res: ServerResponse) {
     switch (method) {
         case 'GET':
             if (userId) {
-                //controller
+                return getUserByIdHandler(req, res, userId)
             } else {
                 return getAllUsersHandler(req, res)
             }
-            break
         case 'POST':
             return postUserHandler(req, res)
         case 'PUT':
