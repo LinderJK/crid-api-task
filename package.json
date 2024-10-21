@@ -4,7 +4,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start:dev": "cross-env NODE_ENV=development nodemon --config nodemon.json",
-    "build": "webpack --config webpack.config.js",
+    "build": "webpack --config webpack.config.mjs",
     "start:prod": "cross-env NODE_ENV=production npm run build && node dist/bundle.js",
     "lint": "eslint 'src/**/*.{ts,js}'",
     "format": "prettier --write 'src/**/*.{ts,js,json}'",
